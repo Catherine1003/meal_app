@@ -1,7 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:meal_app/core/common_widgets/custom_network_image.dart';
+import 'package:meal_app/core/extensions/navigation_extension.dart';
 import 'package:meal_app/core/models/json_data.dart';
+import 'package:meal_app/pages/meal_detail_page.dart';
 import '../core/app_styles/app_colors.dart';
 import '../core/app_styles/app_styles.dart';
 import '../core/models/category.dart';
@@ -17,15 +18,13 @@ class MealListPage extends StatefulWidget {
 }
 
 class _MealListPageState extends State<MealListPage> {
-  late Category category;
   List<Meal> filteredMeals = [];
 
   @override
   void initState(){
     super.initState();
-    category = widget.selectedCategory;
     filteredMeals = JsonData.mealList.where((meal) {
-      return meal.categories.contains(category.id);
+      return meal.categories.contains(widget.selectedCategory.id);
     }).toList();
   }
 
@@ -34,7 +33,7 @@ class _MealListPageState extends State<MealListPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          category.title,
+          widget.selectedCategory.title,
         ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -86,13 +85,15 @@ class MealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        context.push(MealDetailPage(selectedMeal: meal));
+      },
       child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 5,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(10),
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
