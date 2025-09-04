@@ -61,7 +61,6 @@ class JsonData {
         ],
         "isGlutenFree": false, "isVegan": true, "isVegetarian": true, "isLactoseFree": true
       },
-      // ... (rest of the dummyMeals data)
       {
         "id": "m2",
         "categories": ["c2"],

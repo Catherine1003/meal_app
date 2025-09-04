@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.category),
+            icon: Icon(Icons.food_bank),
             label: 'Categories',
           ),
           BottomNavigationBarItem(
@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
         currentIndex: _selectedIndex,
         selectedItemColor: AppColors.colorCardPrimary,
         unselectedItemColor: AppColors.colorGrey,
-        backgroundColor: AppColors.blackColor,
+        backgroundColor: AppColors.bgColor,
         onTap: _onItemTapped,
       ),
     );

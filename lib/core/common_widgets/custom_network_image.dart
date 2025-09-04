@@ -17,21 +17,27 @@ class CustomNetworkImage extends StatelessWidget {
       width: width,
       fit: fit ?? BoxFit.cover,
       placeholder: (context, url) {
-        return Image.asset(
-          "assets/images/placeholder_1.png",
-          alignment: Alignment.center,
-          height: 100,
-          width: 100,
-          fit: BoxFit.contain,
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            "assets/images/placeholder.png",
+            alignment: Alignment.center,
+            height: 100,
+            width: 100,
+            fit: BoxFit.contain,
+          ),
         );
       },
       errorWidget: (context, url, error) {
-        return Image.asset(
-          "assets/images/placeholder_1.png",
-          alignment: Alignment.center,
-          height: 100,
-          width: 100,
-          fit: BoxFit.contain,
+        return Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            "assets/images/placeholder.png",
+            alignment: Alignment.center,
+            height: 100,
+            width: 100,
+            fit: BoxFit.contain,
+          ),
         );
       },
     );

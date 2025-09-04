@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:meal_app/core/services/hive_service.dart';
 import 'package:meal_app/pages/home_page.dart';
 import 'config/ui_config/ui_config.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -29,10 +27,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         brightness: Brightness.dark,
-        scaffoldBackgroundColor: AppColors.blackColor,
+        scaffoldBackgroundColor: AppColors.bgColor,
         appBarTheme: AppBarTheme(
           centerTitle: true,
-          backgroundColor: AppColors.blackColor,
+          backgroundColor: AppColors.bgColor,
           elevation: 0,
           titleTextStyle: AppStyles.labelLarge(color: AppColors.whiteColor,
           size: 16),
@@ -41,8 +39,8 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
         colorScheme: const ColorScheme.dark(
           primary: AppColors.primaryColor,
-          surface: AppColors.blackColor,
-          background: AppColors.blackColor,
+          surface: AppColors.bgColor,
+          background: AppColors.bgColor,
           onPrimary: AppColors.whiteColor,
           onSurface: AppColors.whiteColor,
           onBackground: AppColors.whiteColor,

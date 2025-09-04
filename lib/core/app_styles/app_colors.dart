@@ -8,5 +8,5 @@ class AppColors {
   static const Color colorCardPrimary = Color(0xfffff6f1);
   static const Color colorGrey = Colors.grey;
   static const Color colorGreyWhite = Color(0xffffffff);
-  static const Color drawerColor = Color(0xff221716);
+  static const Color bgColor = Color(0xff211915);
 }

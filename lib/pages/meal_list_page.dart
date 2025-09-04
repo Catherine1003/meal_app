@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:meal_app/core/common_widgets/custom_network_image.dart';
 import 'package:meal_app/core/extensions/navigation_extension.dart';
 import 'package:meal_app/core/models/json_data.dart';
+import 'package:meal_app/core/services/hive_service.dart';
 import 'package:meal_app/pages/meal_detail_page.dart';
 import '../core/app_styles/app_colors.dart';
 import '../core/app_styles/app_styles.dart';
@@ -19,6 +20,11 @@ class MealListPage extends StatefulWidget {
 
 class _MealListPageState extends State<MealListPage> {
   List<Meal> filteredMeals = [];
+  bool isFilterAvailable = false;
+  var _isVegan = false;
+  var _isVegetarian = false;
+  var _isLactoseFree = false;
+  var _isGlutenFree = false;
 
   @override
   void initState(){
@@ -26,10 +32,24 @@ class _MealListPageState extends State<MealListPage> {
     filteredMeals = JsonData.mealList.where((meal) {
       return meal.categories.contains(widget.selectedCategory.id);
     }).toList();
+    loadData();
+  }
+
+  Future<bool> loadData() async {
+    _isGlutenFree = await HiveService().getFilterValue(1);
+    _isLactoseFree = await HiveService().getFilterValue(2);
+    _isVegetarian = await HiveService().getFilterValue(3);
+    _isVegan = await HiveService().getFilterValue(4);
+    isFilterAvailable = _isGlutenFree || _isLactoseFree ||
+        _isVegetarian || _isVegetarian;
+    setState(() {});
+    return true;
   }
 
   @override
   Widget build(BuildContext context) {
+    var count = 0;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -44,11 +64,51 @@ class _MealListPageState extends State<MealListPage> {
       ? ListView.builder(
         itemCount: filteredMeals.length,
         itemBuilder: (context, index) {
-          return MealCard(meal: filteredMeals[index],
-            onTap: (){
-              context.pushWithResult(MealDetailPage(
-                  selectedMeal: filteredMeals[index])).then((val) {});
-            },);
+          if(isFilterAvailable){
+            if((index == filteredMeals.length - 1) && count == 0 &&
+                ((_isGlutenFree && filteredMeals[index].isGlutenFree) ||
+                (_isLactoseFree && filteredMeals[index].isLactoseFree) ||
+                (_isVegetarian && filteredMeals[index].isVegetarian) ||
+                (_isVegan && filteredMeals[index].isVegan)) == false){
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.38),
+                  Center(
+                    child: Image.asset("assets/images/empty_data.png",
+                        width: 100,
+                        height: 100,
+                    color: AppColors.primaryColorLight),
+                  ),
+                  const SizedBox(height: 12),
+                  Center(
+                    child: Text("No meals available for the filter!",
+                        style: AppStyles.titleMedium(
+                            size: 16
+                        ),
+                        textAlign: TextAlign.justify),
+                  ),
+                ],
+              );
+            } else if((_isGlutenFree && filteredMeals[index].isGlutenFree) ||
+                (_isLactoseFree && filteredMeals[index].isLactoseFree) ||
+                (_isVegetarian && filteredMeals[index].isVegetarian) ||
+                (_isVegan && filteredMeals[index].isVegan)){
+              count++;
+              return MealCard(meal: filteredMeals[index],
+                  onTap: (){
+                    context.pushWithResult(MealDetailPage(
+                        selectedMeal: filteredMeals[index])).then((val) {});
+                  });}
+          } else {
+            return MealCard(meal: filteredMeals[index],
+                onTap: (){
+                  context.pushWithResult(MealDetailPage(
+                      selectedMeal: filteredMeals[index])).then((val) {});
+                });
+          }
+          return Container();
         },
       ) : SafeArea(
         child: Column(
@@ -56,7 +116,17 @@ class _MealListPageState extends State<MealListPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
+              child: Image.asset("assets/images/empty_data.png",
+              width: 120,
+              height: 120,
+                  color: AppColors.primaryColorLight),
+            ),
+            const SizedBox(height: 12),
+            Center(
               child: Text("No meals available in this category!",
+                  style: AppStyles.titleMedium(
+                      size: 16
+                  ),
               textAlign: TextAlign.justify),
             ),
           ],
@@ -139,9 +209,10 @@ class _MealCardState extends State<MealCard> {
                     children: [
                       Text(
                         widget.meal.title,
-                        style: AppStyles.titleMedium(size: 16),
+                        style: AppStyles.titleMedium(size: 16,
+                        weight: FontWeight.w700),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/core/extensions/navigation_extension.dart';
 import 'package:meal_app/core/services/hive_service.dart';
-import '../core/models/category.dart';
+import '../core/app_styles/app_colors.dart';
+import '../core/app_styles/app_styles.dart';
 import '../core/models/meal_model.dart';
 import 'meal_detail_page.dart';
 import 'meal_list_page.dart';
@@ -53,7 +54,17 @@ class _FavoritesPageState extends State<FavoritesPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Center(
+              child: Image.asset("assets/images/empty_data.png",
+                  width: 120,
+                  height: 120,
+                  color: AppColors.primaryColorLight),
+            ),
+            const SizedBox(height: 12),
+            Center(
               child: Text("No meals added yet!",
+                  style: AppStyles.titleMedium(
+                    size: 16
+                  ),
                   textAlign: TextAlign.justify),
             ),
           ],
