@@ -26,9 +26,11 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: AppColors.blackColor,
         appBarTheme: AppBarTheme(
+          centerTitle: true,
           backgroundColor: AppColors.blackColor,
           elevation: 0,
-          titleTextStyle: AppStyles.titleLarge(color: AppColors.whiteColor),
+          titleTextStyle: AppStyles.labelLarge(color: AppColors.whiteColor,
+          size: 16),
           iconTheme: IconThemeData(color: AppColors.whiteColor),
         ),
         textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
