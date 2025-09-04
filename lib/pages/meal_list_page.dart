@@ -182,6 +182,7 @@ class _MealCardState extends State<MealCard> {
     return InkWell(
       onTap: widget.onTap,
       child: Card(
+        color: AppColors.colorGrey.withOpacity(0.6),
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         elevation: 5,
