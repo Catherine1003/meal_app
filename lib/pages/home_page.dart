@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/pages/favorites_page.dart';
 import '../core/app_styles/app_colors.dart';
 import 'categories_page.dart';
 
@@ -20,7 +21,7 @@ class _HomePageState extends State<HomePage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     CategoriesPage(),
-    Container(),
+    FavoritesPage(),
   ];
 
   @override

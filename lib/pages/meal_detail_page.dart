@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:meal_app/core/common_widgets/custom_network_image.dart';
+import 'package:meal_app/core/services/hive_service.dart';
 
 import '../core/app_styles/app_colors.dart';
 import '../core/app_styles/app_styles.dart';
@@ -15,6 +16,21 @@ class MealDetailPage extends StatefulWidget {
 }
 
 class _MealDetailPageState extends State<MealDetailPage> {
+  bool doesMealExist = false;
+
+  @override
+  void initState(){
+    super.initState();
+    HiveService().doesMealExist(widget.selectedMeal.id).then((val) => {
+      setState(() {
+        if(val){
+          doesMealExist = true;
+        } else{
+          doesMealExist = false;
+        }
+      })
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +45,21 @@ class _MealDetailPageState extends State<MealDetailPage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.star),
-            onPressed: () {},
+            icon: Icon((doesMealExist) ? Icons.star : Icons.star_border),
+            onPressed: () async {
+              if(doesMealExist){
+                HiveService().deleteMeal(widget.selectedMeal.id);
+                ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Meal removed from Favorites!')));
+                setState(() { doesMealExist = false;});
+              } else{
+                await HiveService().addMeal(widget.selectedMeal).then((val){
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Meal added to Favorites!')));
+                  setState(() { doesMealExist = true;});
+                });
+              }
+            },
           ),
         ],
       ),

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:meal_app/core/services/hive_service.dart';
 import 'package:meal_app/pages/home_page.dart';
 import 'config/ui_config/ui_config.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +11,8 @@ import 'core/app_styles/app_styles.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox('storageBox');
   runApp(MyApp());
   UiConfig.systemUiConfig();
 }

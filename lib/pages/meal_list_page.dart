@@ -40,26 +40,51 @@ class _MealListPageState extends State<MealListPage> {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: ListView.builder(
+      body: (filteredMeals.isNotEmpty == true)
+      ? ListView.builder(
         itemCount: filteredMeals.length,
         itemBuilder: (context, index) {
-          return MealCard(meal: filteredMeals[index]);
+          return MealCard(meal: filteredMeals[index],
+            onTap: (){
+              context.pushWithResult(MealDetailPage(
+                  selectedMeal: filteredMeals[index])).then((val) {});
+            },);
         },
+      ) : SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Center(
+              child: Text("No meals available in this category!",
+              textAlign: TextAlign.justify),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-class MealCard extends StatelessWidget {
+class MealCard extends StatefulWidget {
   final Meal meal;
+  final bool? isFromFavorites;
+  final Function() onTap;
 
   const MealCard({
     required this.meal,
+    this.isFromFavorites,
+    required this.onTap,
     super.key,
   });
 
+  @override
+  State<MealCard> createState() => _MealCardState();
+}
+
+class _MealCardState extends State<MealCard> {
   String get complexityText {
-    switch (meal.complexity) {
+    switch (widget.meal.complexity) {
       case Complexity.simple:
         return 'Simple';
       case Complexity.challenging:
@@ -70,7 +95,7 @@ class MealCard extends StatelessWidget {
   }
 
   String get affordabilityText {
-    switch (meal.affordability) {
+    switch (widget.meal.affordability) {
       case Affordability.affordable:
         return 'Affordable';
       case Affordability.pricey:
@@ -85,9 +110,7 @@ class MealCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        context.push(MealDetailPage(selectedMeal: meal));
-      },
+      onTap: widget.onTap,
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -98,7 +121,7 @@ class MealCard extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               CustomNetworkImage(
-                imageUrl: meal.imageUrl,
+                imageUrl: widget.meal.imageUrl,
                 fit: BoxFit.cover,
                 height: 200,
                 width: double.infinity,
@@ -115,7 +138,7 @@ class MealCard extends StatelessWidget {
                   child: Column(
                     children: [
                       Text(
-                        meal.title,
+                        widget.meal.title,
                         style: AppStyles.titleMedium(size: 16),
                       ),
                       const SizedBox(height: 5),
@@ -126,7 +149,7 @@ class MealCard extends StatelessWidget {
                               color: AppColors.whiteColor, size: 16),
                           const SizedBox(width: 4),
                           Text(
-                            '${meal.duration} min',
+                            '${widget.meal.duration} min',
                             style: AppStyles.bodyMedium(),
                           ),
                           const SizedBox(width: 8),

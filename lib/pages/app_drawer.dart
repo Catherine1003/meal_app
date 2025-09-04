@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meal_app/core/extensions/navigation_extension.dart';
 
 import '../core/app_styles/app_colors.dart';
 import '../core/app_styles/app_styles.dart';
+import 'filter_page.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({super.key});
@@ -47,7 +49,9 @@ class AppDrawer extends StatelessWidget {
               'Filters',
               style: AppStyles.titleMedium(size: 20),
             ),
-            onTap: () {},
+            onTap: () {
+              context.push(const FilterPage());
+            },
           ),
         ],
       ),
